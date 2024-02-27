@@ -1,0 +1,26 @@
+.userTable {
+    margin-top: 4vh; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.userTable th, .userTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.evenRow {
+    background-color: #f9f9f9;
+}
+
+.oddRow {
+    background-color: #fff;
+}
+  
+
+.pageContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+} 
