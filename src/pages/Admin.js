@@ -1,6 +1,7 @@
 import React from 'react';
+import Link from 'next/link';
 import { ClientContext, ClientContextProvider } from '../context/ClientContext'; 
-import styles from './Component.module.css'; 
+import styles from '../styles/Admin.module.css'; 
 
 function Component() {
   const { apiRequest } = React.useContext(ClientContext);
@@ -14,10 +15,11 @@ function Component() {
       .then((res) => {
         setUsers(res);
         setLoading(false);
-        console.log("res", res);
+        // console.log("res", res);
       })
       .catch((err) => {
         setLoading(false);
+        console.log("err", err);
         // showNotification({message: err.message, color: 'red', autoClose: true})
       });
   };
@@ -57,7 +59,13 @@ function Component() {
                 <tr key={`${index}-${user._id}`} className={index % 2 === 0 ? styles.evenRow : styles.oddRow}>
                   <td>{user._id}</td>
                   <td>{user.nome}</td>
-                  <td>{formatUserName(user.nome)}</td>
+                  <td>
+                    <Link 
+                      href={`${window.location.origin}/user/${formatUserName(user.nome)}?id=${user._id}`}
+                    >
+                      <div>{formatUserName(user.nome)}</div>
+                    </Link>
+                  </td>
                   <td>
                     <button onClick={() => handleDelete(user._id)}>Delete</button>
                   </td>
