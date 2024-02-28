@@ -36,7 +36,7 @@ const serverRequest = ({method, url, params, user, downloadFile, contentType}) =
 			let requestInfo = {
 				method: method,
 				url: url,
-				baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8181",
+				baseURL: process.env.NEXT_PUBLIC_API_URL, //|| "http://localhost:8181",
 				headers: {
 					'Accept': '*',
 					'Language': "pt",
