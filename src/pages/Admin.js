@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Modal from 'react-modal';
 import { ClientContext, ClientContextProvider } from '../context/ClientContext'; 
 import styles from '../styles/Admin.module.css'; 
 
@@ -8,6 +9,33 @@ function Component() {
 
   const [users, setUsers] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newUserName, setNewUserName] = useState('');
+  const [createLoading, setCreateLoading] = useState(false); // Novo estado para o botão de criar
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNewUserName('');
+  };
+
+  const handleCreateUser = () => {
+    setCreateLoading(true); 
+    apiRequest("POST", "/users/create", { nome: newUserName })
+      .then(() => {
+        closeModal();
+        getUsers();
+      })
+      .catch((err) => {
+        console.error('Error creating user:', err);
+      })
+      .finally(() => {
+        setCreateLoading(false); 
+      });
+  };
 
   const getUsers = () => {
     setLoading(true);
@@ -15,17 +43,25 @@ function Component() {
       .then((res) => {
         setUsers(res);
         setLoading(false);
-        // console.log("res", res);
       })
       .catch((err) => {
         setLoading(false);
         console.log("err", err);
-        // showNotification({message: err.message, color: 'red', autoClose: true})
       });
   };
 
   const handleDelete = (userId) => {
-    console.log(`Deleting user with ID ${userId}`);
+    setLoading(true); 
+    apiRequest("DELETE", "/users/delete/" + userId)
+      .then(() => {
+        getUsers();
+      })
+      .catch((err) => {
+        console.error('Error deleting user:', err);
+      })
+      .finally(() => {
+        setLoading(false); 
+      });
   };
 
   const formatUserName = (name) => {
@@ -40,6 +76,12 @@ function Component() {
     <div className={styles.pageContainer}>
       <h2>Welcome to the Admin Area!</h2>
       <p>This area is connected to the Node.js API with MongoDB. You can create new users here.</p>
+
+      <div className={styles.createButtonContainer}>
+        <button onClick={openModal} className={styles.createButton} disabled={createLoading}>
+          {createLoading ? 'Creating...' : 'Create'}
+        </button>
+      </div>
 
       {loading ? (
         <p>Loading...</p>
@@ -75,6 +117,32 @@ function Component() {
           </table>
         </div>
       )}
+
+      {/* Modal */}
+      <Modal
+        isOpen={isModalOpen || false}
+        onRequestClose={() => closeModal()}
+        contentLabel="Create User Modal"
+        className={styles.modalContent}
+        overlayClassName={styles.modalOverlay}
+      >
+        <h2>Create User</h2>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={newUserName}
+            onChange={(e) => setNewUserName(e.target.value)}
+          />
+        </label>
+        <button onClick={handleCreateUser} disabled={createLoading}>
+          {createLoading ? 'Creating...' : 'Create'}
+        </button>
+        <button onClick={closeModal} disabled={createLoading}>
+          Cancel
+        </button>
+      </Modal>
+
     </div>
   );
 }

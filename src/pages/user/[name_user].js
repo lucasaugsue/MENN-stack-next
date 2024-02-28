@@ -36,7 +36,7 @@ function UserProfile() {
 
   return (
     <div className={styles.userProfileContainer}>
-      <h1>{`This is the user page for ${userData.nome}!`}</h1>
+      <h1>{`This page is for ${userData.nome}!`}</h1>
       <p>{`The ID is ${userData._id}.`}</p>
       <Link href="/">Return to home</Link>
     </div>
