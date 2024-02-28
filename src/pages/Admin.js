@@ -11,7 +11,7 @@ function Component() {
   const [loading, setLoading] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newUserName, setNewUserName] = useState('');
-  const [createLoading, setCreateLoading] = useState(false); // Novo estado para o botão de criar
+  const [createLoading, setCreateLoading] = useState(false); 
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -103,7 +103,7 @@ function Component() {
                   <td>{user.nome}</td>
                   <td>
                     <Link 
-                      href={`${window.location.origin}/user/${formatUserName(user.nome)}?id=${user._id}`}
+                      href={`/user/${formatUserName(user.nome)}?id=${user._id}`}
                     >
                       <div>{formatUserName(user.nome)}</div>
                     </Link>

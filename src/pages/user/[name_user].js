@@ -1,14 +1,22 @@
+import 'dotenv'
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ClientContext, ClientContextProvider } from '../../context/ClientContext'; 
 import styles from '../../styles/User.module.css'; 
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { firebaseConfig } from "../../config/firebaseConfig";
 
 function UserProfile() {
   const params = useRouter().query;
   const { apiRequest } = React.useContext(ClientContext);
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+
+  // Initialize Firebase
+  // const app = initializeApp(firebaseConfig);
+  // const analytics = getAnalytics(app);
   
   React.useEffect(() => {
     if (params) {
